@@ -63,3 +63,8 @@ if (isIos() && !isInStandaloneMode()) {
     const installBtn = document.getElementById('installBtn');
     installBtn.style.display = 'block';
 }
+} else if (!isIos()) {
+    const installBtn = document.getElementById('installBtn');
+    installBtn.style.display = 'block';
+}
+
