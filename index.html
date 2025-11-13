@@ -151,33 +151,57 @@ color1: "#00FF00",
 color2: "#ffff00",
 color3: "#FF1F6F",
 color4: "#FF1F6F",
+
+
 });
-</script>
+
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('installPopup').style.display = 'block';
+        });
+
+        document.getElementById('installAppButton').addEventListener('click', async () => {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('installPopup').style.display = 'none';
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+            }
+        });
+
+        document.getElementById('overlay').addEventListener('click', () => {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('installPopup').style.display = 'none';
+        });
+
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
+
+        if (isIOS()) {
+            document.getElementById('installAppButton').style.display = 'none';
+            document.getElementById('iosInstructions').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('installPopup').style.display = 'block';
+        }
+    </script>
+    <footer style="display:grid;align-content:end">
+        <div style="background-color:#000000;color:#fff;text-align:center;padding:5px">
+            ©<a href="http://wa.me/51992377712">Copyright 2025 - Desarrollado por Jc</a>
+        </div>
+        <script>
+            $(".mobile-nav-toggle").click(function () {
+                $("body").toggleClass("mobile-nav-active");
+                $(".mobile-nav-toggle i").toggleClass("fa-bars fa-times");
+            });
+        </script>
+    </footer>
 
 
-<div class="background_hora"><div id="relogio">15:00:05</div></div>
-<script>
-function reloj() {
-let elementoID = document.getElementById('relogio');
-let horalocal = new Date().toLocaleTimeString('es');
-elementoID.innerHTML = horalocal;
-}
-setInterval(reloj, 1000);
-</script>
-</div>
-
-
-<footer style="display:grid;align-content:end">
-<div style="background-color:#222;color:#fff;text-align:center;padding:10px"> 
-&copy; Copyright 2024 - <a href="https://whatsapp://send?text=&phone=51992377712">RadioExotica</a> 
-</div>
-</footer>
-
-<script>
-$(".mobile-nav-toggle").click(function(){
-$("body").toggleClass("mobile-nav-active");
-$(".mobile-nav-toggle i").toggleClass("fa-bars fa-times");
-});
-</script>
 </body>
-</html>
